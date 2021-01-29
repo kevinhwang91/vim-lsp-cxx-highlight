@@ -23,17 +23,13 @@ function! lsp_cxx_hl#textprop_nvim#skipped#notify(bufnr, skipped) abort
 endfunction
 
 function! lsp_cxx_hl#textprop_nvim#skipped#highlight(bufnr) abort
-    if s:has_timers
-        if get(g:, 'lsp_cxx_hl_skipped_timer', -1) != -1
-            call lsp_cxx_hl#verbose_log('stopped hl_skipped timer')
-            call timer_stop(g:lsp_cxx_hl_skipped_timer)
-        endif
-
-        let g:lsp_cxx_hl_skipped_timer = timer_start(10,
-                    \ function('s:hl_skipped_wrap', [a:bufnr]))
-    else
-        call s:hl_skipped_wrap(a:bufnr, 0)
+    if get(g:, 'lsp_cxx_hl_skipped_timer', -1) != -1
+        call lsp_cxx_hl#verbose_log('stopped hl_skipped timer')
+        call timer_stop(g:lsp_cxx_hl_skipped_timer)
     endif
+
+    let g:lsp_cxx_hl_skipped_timer = timer_start(10,
+                \ function('s:hl_skipped_wrap', [a:bufnr]))
 endfunction
 
 function! s:get_ns_id(bufnr) abort

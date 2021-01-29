@@ -25,15 +25,7 @@ function! s:notify_json_rpc(json) abort
 
     let l:method = get(l:msg, 'method', '')
 
-    if l:method ==? '$cquery/publishSemanticHighlighting'
-        let l:server = 'cquery'
-        let l:is_skipped = 0
-        let l:data_key = 'symbols'
-    elseif l:method ==? '$cquery/setInactiveRegions'
-        let l:server = 'cquery'
-        let l:is_skipped = 1
-        let l:data_key = 'inactiveRegions'
-    elseif l:method ==? '$ccls/publishSemanticHighlight'
+    if l:method ==? '$ccls/publishSemanticHighlight'
         let l:server = 'ccls'
         let l:is_skipped = 0
         let l:data_key = 'symbols'
@@ -91,8 +83,7 @@ function! lsp_cxx_hl#notify_symbols(server, buffer, symbols) abort
     try
         let l:begintime = lsp_cxx_hl#profile_begin()
 
-        let l:n_symbols = lsp_cxx_hl#parse#normalize_symbols(a:symbols,
-                    \ (a:server ==# 'ccls'))
+        let l:n_symbols = lsp_cxx_hl#parse#normalize_symbols(a:symbols)
 
         call lsp_cxx_hl#hl#notify_symbols(l:bufnr, l:n_symbols)
 
@@ -156,8 +147,8 @@ function! s:common_notify_checks(server, buffer, data) abort
         throw 'symbols must be a list'
     endif
 
-    if a:server !=# 'cquery' && a:server !=# 'ccls'
-        throw 'only cquery or ccls is supported'
+    if  a:server !=# 'ccls'
+        throw 'ccls is supported'
     endif
 
     return l:bufnr
@@ -166,11 +157,7 @@ endfunction
 " Section: Misc Helpers
 function! s:uri2bufnr(uri) abort
     " Absolute paths on windows has 3 leading /
-    if has('win32') || has('win64')
-        let l:regex = '\c^[a-z]\+:///\?'
-    else
-        let l:regex = '\c^[a-z]\+://'
-    endif
+    let l:regex = '\c^[a-z]\+://'
 
     " Remove the leading file:// or whatever protocol is used
     let l:filename = substitute(a:uri, l:regex, '', '')
@@ -204,4 +191,4 @@ function! s:unescape_urlencode(str) abort
 
     call lsp_cxx_hl#verbose_log('unescape_urlencode unescaped filename: ', l:str)
     return l:str
-endfunction!
+endfunction

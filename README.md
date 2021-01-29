@@ -1,3 +1,5 @@
+Fork it for myself
+
 # vim-lsp-cxx-highlight
 
 vim-lsp-cxx-highlight is a vim plugin that provides C/C++/Cuda/ObjC semantic highlighting
@@ -110,15 +112,6 @@ What using text-properties improves:
 
 Support for this feature has been tested on Vim version `8.1.1722`, older versions may have problems.
 It is recommended to upgrade to this version or newer.
-
-To enable:
-```vim
-let g:lsp_cxx_hl_use_text_props = 1
-```
-
-**Note:** This is now automatically enabled for vim version 8.2 or greater
-
-This is a experimental feature so it may be quite buggy, please file bug reports!
 
 
 ## License

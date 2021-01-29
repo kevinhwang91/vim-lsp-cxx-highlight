@@ -1,5 +1,5 @@
 " neovim text properties implementation of symbol highlighting
-" 
+"
 " Variables:
 "
 " b:lsp_cxx_hl_symbols_cur_ns
@@ -14,8 +14,6 @@
 "   if timers are available this is the timer
 "   id for symbols
 
-let s:has_timers = has('timers')
-
 function! lsp_cxx_hl#textprop_nvim#symbols#notify(bufnr, symbols) abort
     call setbufvar(a:bufnr, 'lsp_cxx_hl_symbols', a:symbols)
 
@@ -27,17 +25,13 @@ function! lsp_cxx_hl#textprop_nvim#symbols#notify(bufnr, symbols) abort
 endfunction
 
 function! lsp_cxx_hl#textprop_nvim#symbols#highlight(bufnr) abort
-    if s:has_timers
-        if get(g:, 'lsp_cxx_hl_symbols_timer', -1) != -1
-            call lsp_cxx_hl#verbose_log('stopped hl_symbols timer')
-            call timer_stop(g:lsp_cxx_hl_symbols_timer)
-        endif
-
-        let g:lsp_cxx_hl_symbols_timer = timer_start(10,
-                    \ function('s:hl_symbols_wrap', [a:bufnr]))
-    else
-        call s:hl_symbols_wrap(a:bufnr, 0)
+    if get(g:, 'lsp_cxx_hl_symbols_timer', -1) != -1
+        call lsp_cxx_hl#verbose_log('stopped hl_symbols timer')
+        call timer_stop(g:lsp_cxx_hl_symbols_timer)
     endif
+
+    let g:lsp_cxx_hl_symbols_timer = timer_start(10,
+                \ function('s:hl_symbols_wrap', [a:bufnr]))
 endfunction
 
 function! s:get_ns_id(bufnr) abort
@@ -97,8 +91,6 @@ function! s:hl_symbols(bufnr, timer) abort
 
     let l:missing_groups = {}
 
-    let l:byte_offset_warn_done = 0
-
     for l:sym in l:symbols
         " Create prop type
         let l:hl_group = 'LspCxxHlSym'
@@ -124,7 +116,7 @@ function! s:hl_symbols(bufnr, timer) abort
 
             " FIXME: unify reporting of missing hl groups
             let l:missing_groups[l:hl_group] += []
-            
+
             continue
         endif
 
@@ -133,17 +125,6 @@ function! s:hl_symbols(bufnr, timer) abort
             call lsp_cxx_hl#textprop_nvim#buf_add_hl_lsrange(a:bufnr, l:ns_id,
                         \ l:hl_group_c, l:range)
         endfor
-
-        let l:offsets = get(l:sym, 'offsets', [])
-        if !empty(l:offsets) && !l:byte_offset_warn_done
-            echohl ErrorMsg
-            echomsg 'Error: ls ranges is not enabled in ccls'
-            echohl NONE
-
-            call lsp_cxx_hl#log('Error: ls ranges not enabled in ccls')
-            
-            let l:byte_offset_warn_done = 1
-        endif
     endfor
 
     call lsp_cxx_hl#log('hl_symbols (textprop nvim) highlighted ',

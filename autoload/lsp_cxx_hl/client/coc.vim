@@ -11,14 +11,6 @@ function! lsp_cxx_hl#client#coc#init() abort
 endfunction
 
 function! s:doinit() abort
-    call CocRegistNotification('cquery',
-                \ '$cquery/publishSemanticHighlighting',
-                \ function('s:cquery_hl'))
-
-    call CocRegistNotification('cquery',
-                \ '$cquery/setInactiveRegions',
-                \ function('s:cquery_regions'))
-
     call CocRegistNotification('ccls',
                 \ '$ccls/publishSemanticHighlight',
                 \ function('s:ccls_hl'))
@@ -26,20 +18,6 @@ function! s:doinit() abort
     call CocRegistNotification('ccls',
                 \ '$ccls/publishSkippedRanges',
                 \ function('s:ccls_regions'))
-endfunction
-
-function! s:cquery_hl(params) abort
-    call lsp_cxx_hl#log('cquery hl:', a:params)
-
-    call lsp_cxx_hl#notify_symbols('cquery', a:params['uri'],
-                \ a:params['symbols'])
-endfunction
-
-function! s:cquery_regions(params) abort
-    call lsp_cxx_hl#log('cquery regions:', a:params)
-
-    call lsp_cxx_hl#notify_skipped('cquery', a:params['uri'],
-                \ a:params['inactiveRegions'])
 endfunction
 
 function! s:ccls_hl(params) abort

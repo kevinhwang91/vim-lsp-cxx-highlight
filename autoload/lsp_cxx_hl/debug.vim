@@ -47,12 +47,6 @@ function! lsp_cxx_hl#debug#cursor_symbol()
             let l:pos += lsp_cxx_hl#match#lsrange2match(l:range)
         endfor
 
-        if has('byte_offset')
-            for l:offset in get(l:sym, 'offsets', [])
-                let l:pos += lsp_cxx_hl#match#offsets2match(l:offset)
-            endfor
-        endif
-
         for l:p in l:pos
             if type(l:p) ==# type(0) && l:line == l:p
                 let l:under_cursor = 1
