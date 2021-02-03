@@ -47,5 +47,5 @@ hi default link LspCxxHlSymNamespace LspCxxHlGroupNamespace
 " Variables
 hi default link LspCxxHlSymParameter Normal
 
-hi default LspCxxHlSymVariableExtern guifg=#F78C6C gui=bold
+hi default LspCxxHlSymVariableExtern guifg=#D17AA6 gui=bold
 hi default LspCxxHlSymVariableStatic guifg=#609AB4 gui=bold
