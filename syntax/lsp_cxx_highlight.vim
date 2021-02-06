@@ -26,8 +26,6 @@ hi default link LspCxxHlSkippedRegionBeginEnd Normal
 hi default LspCxxHlGroupEnumConstant ctermfg=Magenta guifg=#AD7FA8 cterm=none gui=none
 hi default LspCxxHlGroupNamespace ctermfg=Yellow guifg=#BBBB00 cterm=none gui=none
 
-hi default link LspCxxHlSymUnknown Normal
-
 " Type
 hi default link LspCxxHlSymClass Type
 hi default link LspCxxHlSymStruct Type
@@ -45,7 +43,9 @@ hi default link LspCxxHlSymMacro Macro
 hi default link LspCxxHlSymNamespace LspCxxHlGroupNamespace
 
 " Variables
-hi default link LspCxxHlSymParameter Normal
+hi default link LspCxxHlSymParameter Parameter
+
+hi default link LspCxxHlGroupMemberVariable Keyword
 
 hi default LspCxxHlSymVariableExtern guifg=#D17AA6 gui=bold
 hi default LspCxxHlSymVariableStatic guifg=#609AB4 gui=bold
