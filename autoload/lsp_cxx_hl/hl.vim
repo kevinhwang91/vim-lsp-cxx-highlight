@@ -38,7 +38,9 @@ endfunction
 
 " Notify of new semantic highlighting symbols
 function! lsp_cxx_hl#hl#notify_symbols(bufnr, symbols) abort
-    if get(b:, 'lsp_cxx_hl_disabled', 0)
+    if len(a:symbols) == 0
+        call lsp_cxx_hl#textprop_nvim#symbols#clear(a:bufnr)
+    elseif get(b:, 'lsp_cxx_hl_disabled', 0)
         call lsp_cxx_hl#hl#clear()
     else
         call lsp_cxx_hl#textprop_nvim#symbols#notify(a:bufnr, a:symbols)
@@ -47,7 +49,9 @@ endfunction
 
 " Notify of new preprocessor skipped regions
 function! lsp_cxx_hl#hl#notify_skipped(bufnr, skipped) abort
-    if get(b:, 'lsp_cxx_hl_disabled', 0)
+    if len(a:skipped) == 0
+        call lsp_cxx_hl#textprop_nvim#skipped#clear(a:bufnr)
+    elseif get(b:, 'lsp_cxx_hl_disabled', 0)
         call lsp_cxx_hl#hl#clear()
     else
         call lsp_cxx_hl#textprop_nvim#skipped#notify(a:bufnr, a:skipped)
