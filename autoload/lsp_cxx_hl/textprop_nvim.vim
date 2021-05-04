@@ -19,7 +19,7 @@ function! s:buf_add_hl(buf, ns_id, hl_group,
     " single line symbol
     if a:s_line == a:e_line
         if a:e_char - a:s_char > 0
-            call nvim_buf_set_extmark(a:buf, a:ns_id, a:s_line, a:s_char,
+            sil! call nvim_buf_set_extmark(a:buf, a:ns_id, a:s_line, a:s_char,
                         \ {'hl_group': a:hl_group, 'priority': 101,
                         \ 'end_line': a:s_line, 'end_col': a:e_char})
             return
@@ -45,7 +45,7 @@ function! lsp_cxx_hl#textprop_nvim#buf_add_hl_skipped_range(buf, ns_id, hl_group
     let l:e_line = l:e_line > l:buf_nl - 1 ? l:buf_nl - 1 : l:e_line
 
     if l:s_line + 1 <= l:e_line - 1
-        call nvim_buf_set_extmark(a:buf, a:ns_id, l:s_line + 1, 0,
+        sil! call nvim_buf_set_extmark(a:buf, a:ns_id, l:s_line + 1, 0,
                     \ {'hl_group': a:hl_group, 'priority': 101, 'end_line': l:e_line})
     endif
 endfunction
